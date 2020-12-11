@@ -5,9 +5,35 @@
 
 // Declaring function prototypes
 void loadStudents();
-int loadEnrollment(Enrollments en[]);
-int loadCourses(Courses course[]);
-void menu(Students ArrayOfStudents[], int amountStudents, Courses ArrayOfCourses[], int amountCourses, Enrollments ArrayOfEnrollments[], int amountEnrolls);
+int loadEnrollment();
+int loadCourses();
+void menu();
+
+// Structures
+struct Courses
+{
+    char c_id[10];      // Course id
+    char c_name[50];    // Course name
+    float total_credit; // Course credit total
+
+} C;
+
+struct Enrollments
+{
+    int s_id;          // Student id
+    char c_id[10];     // Course id
+    char semester[30]; // Semester
+    float score;       // Score
+
+} E;
+
+struct Students
+{
+    int e_id;                    // Unique id number
+    char f_name[30], l_name[30]; // First and Last name
+    int b_day, b_month, b_year;  // Birth Day, Month and Year
+
+} S;
 
 // Main
 int main()
