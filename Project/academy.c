@@ -96,9 +96,9 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 {
 	// Declaration
 	char commands[6][15] = {"search_student", "search_courses", "add_course", "count", "sort", "exit"};
-	char options[9][20] = {"fname", "lname", "id", "byear", "cid", "cid_semester", "students", "students_course", "students_semester"};
+	char options[9][20] = {"lname", "fname", "id", "byear", "cid", "cid_semester", "students", "students_course", "students_semester"};
 
-	char input_c[15], input_o[20], input_d[20];
+	char input_c[15];
 	int i;
 
 	// Infinite while loop
@@ -107,46 +107,100 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 
 		printf("==================\n");
 		scanf("%s", input_c);
-		fflush(stdin);
 		printf("------------------\n");
 
 		// Check to see if the input is a valid command
 		if (strcmp(commands[0], input_c) == 0) // search_student
 		{
-			// Call the _ function
-			printf("Enter other details: ");
+			char input_o[20], input_d[20];
+
 			scanf("%s %s", input_o, input_d);
-			fflush(stdin);
-			search_student(options, input_o);
+
+			// Check to see if the input is a valid option
+			if (strcmp(options[0], input_o) == 0) // lname
+			{
+				printf("Searching for student with last name: %s\n", input_d);
+			}
+			else if (strcmp(options[1], input_o) == 0) // fname
+			{
+				printf("Searching for student with first name: %s\n", input_d);
+			}
+			else if (strcmp(options[2], input_o) == 0) // id
+			{
+				printf("Searching for student with the id: %s\n", input_d);
+			}
+			else if (strcmp(options[3], input_o) == 0) // byear
+			{
+				printf("Searching for student with the birth year: %s\n", input_d);
+			}
+			else
+			{
+				printf("Wrong option for \'search_student\' command. Try again.\n");
+			}
+
+			// Call the search_student function
+			search_student(options);
 		}
 		else if (strcmp(commands[1], input_c) == 0) // search_courses
 		{
-			// Call the _ function
-			printf("Enter other details: ");
-			scanf("%s %s", input_o, input_d);
-			fflush(stdin);
-			search_course(options, input_o);
+			char input_o[20], input_cid[20], input_semester[20];
+
+			scanf("%s %s", input_o, input_cid);
+
+			// Check to see if the input is a valid option
+			if (strcmp(options[4], input_o) == 0) // cid
+			{
+				printf("Searching for a course with the ID: %s\n", input_cid);
+			}
+			else if (strcmp(options[5], input_o) == 0) // cid_semester
+			{
+				scanf("%s", input_semester);
+				printf("Searching for a course with the ID & Semester: %s & %s\n", input_cid, input_semester);
+			}
+			else
+			{
+				printf("Wrong option for \'search_course\' command. Try again.\n");
+			}
+
+			// Call the search_course function
+			search_course(options);
 		}
 		else if (strcmp(commands[2], input_c) == 0) // add_course
 		{
-			// Call the _ function
-			printf("Enter other details: ");
-			scanf("%s %s", input_o, input_d);
-			fflush(stdin);
-			add_course(options, input_o);
+			// Call the add_course function
+			add_course(ArrayOfCourses, amountCourses);
 		}
 		else if (strcmp(commands[3], input_c) == 0) // count
 		{
-			// Call the _ function
-			printf("Enter other details: ");
-			scanf("%s %s", input_o, input_d);
-			fflush(stdin);
-			count(options, input_o);
+			char input[20];
+
+			scanf("%s", input);
+
+			// Check to see if the input is a valid option
+			if (strcmp(options[6], input) == 0) // students
+			{
+				printf("Counting the number of: %s\n", input);
+			}
+			else if (strcmp(options[7], input) == 0) // students_course
+			{
+				printf("Counting the number of: %s\n", input);
+			}
+			else if (strcmp(options[8], input) == 0) // students_semester
+			{
+				printf("Counting the number of: %s\n", input);
+			}
+			else
+			{
+				printf("Wrong option for \'count\' command. Try again.\n");
+			}
+
+			// Call the count function
+			count(options);
 		}
 		else if (strcmp(commands[4], input_c) == 0) // sort
 		{
-			// Call the _ function
-			sort();
+			// Call the sort function
+			sort(ArrayOfStudents, amountStudents);
 		}
 		else if (strcmp(commands[5], input_c) == 0) // exit
 		{
@@ -155,34 +209,52 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 		}
 		else
 		{
-			printf("Wrong option. Try again.\n");
+			printf("Wrong command. Try again.\n");
 		}
 	}
 }
 
 // ------------------- Helper Functions --------------------
 
-void search_student(char *options[], char info[])
+void search_student(char *options[])
 {
-	printf("Searching for student: %s\n", info);
+	printf("Nt here 1\n");
+
+	printf("------------------\n");
 }
 
-void search_course(char *options[], char info[])
+void search_course(char *options[])
 {
-	printf("Searching for course: %s\n", info);
+	printf("Ntn here 2\n");
+
+	printf("------------------\n");
 }
 
-void add_course(char *options[], char info[])
+void add_course(C ArrayOfCourses[], int num_courses)
 {
-	printf("Adding a course: %s\n", info);
+	int credit;
+	char cid[20], c_name[20];
+
+	scanf("%s %s %d", cid, c_name, &credit);
+
+	// Make Course struct
+	printf("Making a Course structure\n");
+
+	// Add new Corse struct to array
+
+	printf("------------------\n");
 }
 
-void count(char *options[], char info[])
+void count(char *options[])
 {
-	printf("Counting: %s\n", info);
+	printf("Ntn here 3\n");
+
+	printf("------------------\n");
 }
 
-void sort()
+void sort(S ArrayOfStudents[], int num_students)
 {
 	printf("Sorting the students by ID\n");
+
+	printf("------------------\n");
 }
