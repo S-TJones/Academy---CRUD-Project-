@@ -4,13 +4,13 @@
 #include <string.h>
 
 // Declaring function prototypes
-void loadStudents();
+int loadStudents();
 int loadEnrollment();
 int loadCourses();
 void menu();
 
 // Structures
-struct Courses
+typedef struct Courses
 {
     char c_id[10];      // Course id
     char c_name[50];    // Course name
@@ -18,7 +18,7 @@ struct Courses
 
 } C;
 
-struct Enrollments
+typedef struct Enrollments
 {
     int s_id;          // Student id
     char c_id[10];     // Course id
@@ -27,7 +27,7 @@ struct Enrollments
 
 } E;
 
-struct Students
+typedef struct Students
 {
     int e_id;                    // Unique id number
     char f_name[30], l_name[30]; // First and Last name
@@ -39,6 +39,10 @@ struct Students
 int main()
 {
     // Variable declarations
+    int num_courses, num_enroll, num_students;
+    S st[2000];     // You can assume there should not be more than 2000 students.
+    C course[100]; // You can assume there should not be more than 100 courses.
+    E en[2000];     // You can assume there should not be more than 5000 enrollments.
 
     printf("Hello, World!\n");
 
@@ -46,45 +50,53 @@ int main()
     // ...data from each of the files into appropriate structures...
     // ...so that you don't have to access the file frequently...
     // ...to perform the operations.
-    loadCourses();
-    loadEnrollment();
-    loadStudents();
+    num_courses = loadCourses(course);
+    num_enroll = loadEnrollment(en);
+    num_students = loadStudents(st);
 
     // This function should be called from the main function after loading the array
-    menu();
+    menu(st, num_students, course, num_courses, en, num_enroll);
 
+    printf("Bye!");
     return 0;
 }
 
 //-------------- Load Functions ------------------
 
-void loadStudents()
+// This function will update the referenced variable according to the total number of students in the file.
+int loadStudents(S st[])
 {
+    return 0;
 }
 
 // This function loads the en[] array with the data from the
 // ..enrollment file and returns the total number of enrollment entries.
-int loadEnrollment(Enrollments en[])
+// int loadEnrollment(Enrollments en[])
+int loadEnrollment(E en[])
 {
+    return 0;
 }
 
 // This function loads the course[] array with the...
 // ...data from the course file and returns the total...
 // ... number of courses in the file.
-int loadCourses(Courses course[])
+// int loadCourses(Courses course[])
+int loadCourses(C course[])
 {
+    return 0;
 }
 
 // -------------------------------------------------------
 
 // All the commands should be handled in this function in addition to other functions.
-void menu(Students ArrayOfStudents[], int amountStudents, Courses ArrayOfCourses[], int amountCourses, Enrollments ArrayOfEnrollments[], int amountEnrolls)
+void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amountCourses, E ArrayOfEnrollments[], int amountEnrolls)
 {
     // Declaration
     char option[50];
 
     printf("Please enter an option.\n");
-    return scanf("%s", option);
+    scanf("%s", option);
+    fflush(stdin);
     printf("%s", option);
 
     // Infinite while loop [ here ]
