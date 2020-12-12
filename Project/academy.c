@@ -13,9 +13,13 @@ void search_student_lname();
 void search_student_fname();
 void search_student_id();
 void search_student_byear();
+char *letter_grade(float);
+
 void search_course_cid();
 void search_course_semester();
+
 void add_course();
+
 void count_students();
 void count_course();
 void count_semester();
@@ -41,7 +45,7 @@ typedef struct Enrollments
 
 typedef struct Students
 {
-	int e_id;					 // Unique id number
+	int u_id;					 // Unique id number
 	char f_name[30], l_name[30]; // First and Last name
 	int b_day, b_month, b_year;	 // Birth Day, Month and Year
 
@@ -70,6 +74,11 @@ int main()
 	// This function should be called from the main function after loading the array
 	menu(st, num_students, course, num_courses, en, num_enroll);
 
+	//cleanup:
+	free(st);
+	free(course);
+	free(en);
+
 	return 0;
 }
 
@@ -87,8 +96,8 @@ int loadStudents(S *st)
 	// Begin reading each line from the 'students.txt' file...
 	while (!feof(s_ptr)) // ... until EOF-End of File
 	{
-		fscanf(s_ptr, "%d %s %s %d %d %d ", &student.e_id, student.f_name, student.l_name, &student.b_day, &student.b_month, &student.b_year);
-		// printf("%d %s %s %d %d %d: line %d\n", student.e_id, student.f_name, student.l_name, student.b_day, student.b_month, student.b_year, count);
+		fscanf(s_ptr, "%d %s %s %d %d %d ", &student.u_id, student.f_name, student.l_name, &student.b_day, &student.b_month, &student.b_year);
+		// printf("%d %s %s %d %d %d: line %d\n", student.u_id, student.f_name, student.l_name, student.b_day, student.b_month, student.b_year, count);
 
 		st[count] = student; // Update Student-array
 
@@ -178,38 +187,37 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 		// Check to see if the input is a valid command
 		if (strcmp(commands[0], input_c) == 0) // search_student
 		{
-			char input_o[20], input_d[20];
+			char input_o[20], input_data[20];
 
-			scanf("%s %s", input_o, input_d);
+			scanf("%s %s", input_o, input_data);
 
 			// Check to see if the input is a valid option
 			if (strcmp(options[0], input_o) == 0) // lname
 			{
-				printf("Searching for student with last name: %s\n", input_d);
 
 				// Call the search_student function
-				search_student_lname(ArrayOfStudents);
+				search_student_lname(ArrayOfStudents, amountStudents, input_data, ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls);
 			}
 			else if (strcmp(options[1], input_o) == 0) // fname
 			{
-				printf("Searching for student with first name: %s\n", input_d);
+				printf("Searching for student with first name: %s\n", input_data);
 
 				// Call the search_student function
-				search_student_fname(ArrayOfStudents);
+				search_student_fname(ArrayOfStudents, amountStudents);
 			}
 			else if (strcmp(options[2], input_o) == 0) // id
 			{
-				printf("Searching for student with the id: %s\n", input_d);
+				printf("Searching for student with the id: %s\n", input_data);
 
 				// Call the search_student function
-				search_student_id(ArrayOfStudents);
+				search_student_id(ArrayOfStudents, amountStudents);
 			}
 			else if (strcmp(options[3], input_o) == 0) // byear
 			{
-				printf("Searching for student with the birth year: %s\n", input_d);
+				printf("Searching for student with the birth year: %s\n", input_data);
 
 				// Call the search_student function
-				search_student_byear(ArrayOfStudents);
+				search_student_byear(ArrayOfStudents, amountStudents);
 			}
 			else
 			{
@@ -301,15 +309,94 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 // ------------------- Search_Student Functions --------------------
 
 // This function displays all the information of the students with the given last name.
-void search_student_lname(S *student_array)
+void search_student_lname(S *student_array, int total_s, char *lname_given, C *course_array, int total_c, E *enroll_array, int total_e)
 {
-	printf("Search by Last Name\n");
+	// Declaration of enum
+	typedef enum
+	{
+		F,
+		T
+	} boolean;
 
-	printf("------------------\n");
+	int student_id;
+	char *course_id;
+	char *course_name = "Not Found";
+	char *letter;
+	boolean found = F;
+
+	// Loops through Student-array
+	for (int i = 0; i < total_s; i++)
+	{
+		if (strcmp(student_array[i].l_name, lname_given) == 0)
+		{
+			found = T;
+			student_id = student_array[i].u_id;
+			printf("%d %s %s %d%c%d%c%d\n", student_id, student_array[i].f_name, student_array[i].l_name, student_array[i].b_day, '/', student_array[i].b_month, '/', student_array[i].b_year);
+
+			// Loops through the Enrollment-array
+			for (int j = 0; j < total_e; j++)
+			{
+				if (enroll_array[j].s_id == student_id)
+				{
+					course_id = enroll_array[j].c_id;
+
+					// Find course Name:
+					// Loop through Course-array
+					for (int k = 0; k < total_c; k++)
+					{
+						if (strcmp(course_array[k].c_id, course_id) == 0)
+						{
+							course_name = course_array[k].c_name;
+							break;
+						}
+					}
+
+					letter = letter_grade(enroll_array[j].score);
+					printf("%s %s %s %d %s\n", enroll_array[j].c_id, course_name, enroll_array[j].semester, (int)enroll_array[j].score, letter);
+				}
+			}
+
+			printf("------------------\n");
+		}
+	}
+
+	// Checks to see if the last name was found
+	if (found == F)
+	{
+		printf("Not found");
+		printf("------------------\n");
+	}
+}
+
+// This function calculates the letter grade
+char *letter_grade(float grade)
+{
+
+	// A: >90, B: 80-89.99, C: 70-79.99, D: 60-69.99, F: <60
+	char *letter = "F";
+
+	if (grade >= 90)
+	{
+		letter = "F";
+	}
+	else if (grade >= 80)
+	{
+		letter = "B";
+	}
+	else if (grade >= 70)
+	{
+		letter = "C";
+	}
+	else if (grade >= 60)
+	{
+		letter = "D";
+	}
+
+	return letter;
 }
 
 // This function displays all the information of the students with the given first name.
-void search_student_fname(S *student_array)
+void search_student_fname(S *student_array, int total_s)
 {
 	printf("Search by First Name\n");
 
@@ -317,7 +404,7 @@ void search_student_fname(S *student_array)
 }
 
 // This function displays all the information of the students with the given id number.
-void search_student_id(S *student_array)
+void search_student_id(S *student_array, int total_s)
 {
 	printf("Search by ID\n");
 
@@ -325,7 +412,7 @@ void search_student_id(S *student_array)
 }
 
 // This function displays all the information of the students with the given birth year.
-void search_student_byear(S *student_array)
+void search_student_byear(S *student_array, int total_s)
 {
 	printf("Search by Birth Year\n");
 
