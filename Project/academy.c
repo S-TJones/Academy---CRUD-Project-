@@ -83,7 +83,7 @@ int loadStudents(S *st)
 
 		st[count] = student; // Update Student-array
 
-		count = (count + 1); // Count the number of students
+		count = (count + 1); // Counts the number of students
 	}
 
 	fclose(s_ptr); // Closes the file
@@ -94,18 +94,56 @@ int loadStudents(S *st)
 // This function loads the en[] array with the data from the
 // ..enrollment file and returns the total number of enrollment entries.
 // int loadEnrollment(Enrollments en[])
-int loadEnrollment(E *en[])
+int loadEnrollment(E *en)
 {
-	return 0;
+	int count = 0;
+	E enrollment;
+
+	FILE *e_ptr;						  // Declares the file pointer
+	e_ptr = fopen("enrollment.txt", "r"); // Opens the file for reading
+
+	// Begin reading each line from the 'enrollment.txt' file...
+	while (!feof(e_ptr)) // ... until EOF-End of File
+	{
+		fscanf(e_ptr, "%d %s %s %f ", &enrollment.s_id, enrollment.c_id, enrollment.semester, &enrollment.score);
+		// printf("Enrolls: %d %s %s %f - line %d\n", enrollment.s_id, enrollment.c_id, enrollment.semester, enrollment.score, count);
+
+		en[count] = enrollment; // Update Enrollment-array
+
+		count = (count + 1); // Counts the number of enrollments
+	}
+
+	fclose(e_ptr); // Closes the file
+
+	return count;
 }
 
 // This function loads the course[] array with the...
 // ...data from the course file and returns the total...
 // ... number of courses in the file.
 // int loadCourses(Courses course[])
-int loadCourses(C *course[])
+int loadCourses(C *course)
 {
-	return 0;
+	int count = 0;
+	C a_course;
+
+	FILE *c_ptr;					   // Declares the file pointer
+	c_ptr = fopen("courses.txt", "r"); // Opens the file for reading
+
+	// Begin reading each line from the 'courses.txt' file...
+	while (!feof(c_ptr)) // ... until EOF-End of File
+	{
+		fscanf(c_ptr, "%s %s %f ", a_course.c_id, a_course.c_name, &a_course.total_credit);
+		// printf("Courses: %s %s %f - line %d\n", a_course.c_id, a_course.c_name, a_course.total_credit, count);
+
+		course[count] = a_course; // Updates the Course-array
+
+		count = (count + 1); // Counts the number of courses
+	}
+
+	fclose(c_ptr); // Closes the file
+
+	return count;
 }
 
 // ----------------------- Menu ---------------------------
