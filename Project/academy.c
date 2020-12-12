@@ -51,6 +51,13 @@ typedef struct Students
 
 } S;
 
+// Declaration of enum
+typedef enum
+{
+	F,
+	T
+} boolean;
+
 // Main
 int main()
 {
@@ -194,30 +201,23 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 			// Check to see if the input is a valid option
 			if (strcmp(options[0], input_o) == 0) // lname
 			{
-
 				// Call the search_student function
 				search_student_lname(ArrayOfStudents, amountStudents, input_data, ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls);
 			}
 			else if (strcmp(options[1], input_o) == 0) // fname
 			{
-				printf("Searching for student with first name: %s\n", input_data);
-
 				// Call the search_student function
-				search_student_fname(ArrayOfStudents, amountStudents);
+				search_student_fname(ArrayOfStudents, amountStudents, input_data, ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls);
 			}
 			else if (strcmp(options[2], input_o) == 0) // id
 			{
-				printf("Searching for student with the id: %s\n", input_data);
-
 				// Call the search_student function
-				search_student_id(ArrayOfStudents, amountStudents);
+				search_student_id(ArrayOfStudents, amountStudents, atoi(input_data), ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls);
 			}
 			else if (strcmp(options[3], input_o) == 0) // byear
 			{
-				printf("Searching for student with the birth year: %s\n", input_data);
-
 				// Call the search_student function
-				search_student_byear(ArrayOfStudents, amountStudents);
+				search_student_byear(ArrayOfStudents, amountStudents, atoi(input_data), ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls);
 			}
 			else
 			{
@@ -311,13 +311,6 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 // This function displays all the information of the students with the given last name.
 void search_student_lname(S *student_array, int total_s, char *lname_given, C *course_array, int total_c, E *enroll_array, int total_e)
 {
-	// Declaration of enum
-	typedef enum
-	{
-		F,
-		T
-	} boolean;
-
 	int student_id;
 	char *course_id;
 	char *course_name = "Not Found";
@@ -363,7 +356,7 @@ void search_student_lname(S *student_array, int total_s, char *lname_given, C *c
 	// Checks to see if the last name was found
 	if (found == F)
 	{
-		printf("Not found");
+		printf("Not found\n");
 		printf("------------------\n");
 	}
 }
@@ -377,7 +370,7 @@ char *letter_grade(float grade)
 
 	if (grade >= 90)
 	{
-		letter = "F";
+		letter = "A";
 	}
 	else if (grade >= 80)
 	{
@@ -396,27 +389,162 @@ char *letter_grade(float grade)
 }
 
 // This function displays all the information of the students with the given first name.
-void search_student_fname(S *student_array, int total_s)
+void search_student_fname(S *student_array, int total_s, char *fname_given, C *course_array, int total_c, E *enroll_array, int total_e)
 {
-	printf("Search by First Name\n");
+	int student_id;
+	char *course_id;
+	char *course_name = "Not Found";
+	char *letter;
+	boolean found = F;
 
-	printf("------------------\n");
+	// Loops through Student-array
+	for (int i = 0; i < total_s; i++)
+	{
+		if (strcmp(student_array[i].f_name, fname_given) == 0)
+		{
+			found = T;
+			student_id = student_array[i].u_id;
+			printf("%d %s %s %d%c%d%c%d\n", student_id, student_array[i].f_name, student_array[i].l_name, student_array[i].b_day, '/', student_array[i].b_month, '/', student_array[i].b_year);
+
+			// Loops through the Enrollment-array
+			for (int j = 0; j < total_e; j++)
+			{
+				if (enroll_array[j].s_id == student_id)
+				{
+					course_id = enroll_array[j].c_id;
+
+					// Find course Name:
+					// Loop through Course-array
+					for (int k = 0; k < total_c; k++)
+					{
+						if (strcmp(course_array[k].c_id, course_id) == 0)
+						{
+							course_name = course_array[k].c_name;
+							break;
+						}
+					}
+
+					letter = letter_grade(enroll_array[j].score);
+					printf("%s %s %s %d %s\n", enroll_array[j].c_id, course_name, enroll_array[j].semester, (int)enroll_array[j].score, letter);
+				}
+			}
+
+			printf("------------------\n");
+		}
+	}
+
+	// Checks to see if the last name was found
+	if (found == F)
+	{
+		printf("Not found\n");
+		printf("------------------\n");
+	}
 }
 
 // This function displays all the information of the students with the given id number.
-void search_student_id(S *student_array, int total_s)
+void search_student_id(S *student_array, int total_s, int id_given, C *course_array, int total_c, E *enroll_array, int total_e)
 {
-	printf("Search by ID\n");
+	int student_id;
+	char *course_id = "Not Found";
+	char *course_name = "Not Found";
+	char *letter;
+	boolean found = F;
 
-	printf("------------------\n");
+	// Loops through Student-array
+	for (int i = 0; i < total_s; i++)
+	{
+		if (student_array[i].u_id == id_given)
+		{
+			found = T;
+			student_id = student_array[i].u_id;
+			printf("%d %s %s %d%c%d%c%d\n", student_id, student_array[i].f_name, student_array[i].l_name, student_array[i].b_day, '/', student_array[i].b_month, '/', student_array[i].b_year);
+
+			// Loops through the Enrollment-array
+			for (int j = 0; j < total_e; j++)
+			{
+				if (enroll_array[j].s_id == student_id)
+				{
+					course_id = enroll_array[j].c_id;
+
+					// Find course Name:
+					// Loop through Course-array
+					for (int k = 0; k < total_c; k++)
+					{
+						if (strcmp(course_array[k].c_id, course_id) == 0)
+						{
+							course_name = course_array[k].c_name;
+							break;
+						}
+					}
+
+					letter = letter_grade(enroll_array[j].score);
+					printf("%s %s %s %d %s\n", enroll_array[j].c_id, course_name, enroll_array[j].semester, (int)enroll_array[j].score, letter);
+				}
+			}
+
+			printf("------------------\n");
+		}
+	}
+
+	// Checks to see if the last name was found
+	if (found == F)
+	{
+		printf("Not found\n");
+		printf("------------------\n");
+	}
 }
 
 // This function displays all the information of the students with the given birth year.
-void search_student_byear(S *student_array, int total_s)
+void search_student_byear(S *student_array, int total_s, int year_given, C *course_array, int total_c, E *enroll_array, int total_e)
 {
-	printf("Search by Birth Year\n");
+	int student_id;
+	char *course_id = "Not Found";
+	char *course_name = "Not Found";
+	char *letter;
+	boolean found = F;
 
-	printf("------------------\n");
+	// Loops through Student-array
+	for (int i = 0; i < total_s; i++)
+	{
+		if (student_array[i].b_year == year_given)
+		{
+			found = T;
+			student_id = student_array[i].u_id;
+			printf("%d %s %s %d%c%d%c%d\n", student_id, student_array[i].f_name, student_array[i].l_name, student_array[i].b_day, '/', student_array[i].b_month, '/', student_array[i].b_year);
+
+			// Loops through the Enrollment-array
+			for (int j = 0; j < total_e; j++)
+			{
+				if (enroll_array[j].s_id == student_id)
+				{
+					course_id = enroll_array[j].c_id;
+
+					// Find course Name:
+					// Loop through Course-array
+					for (int k = 0; k < total_c; k++)
+					{
+						if (strcmp(course_array[k].c_id, course_id) == 0)
+						{
+							course_name = course_array[k].c_name;
+							break;
+						}
+					}
+
+					letter = letter_grade(enroll_array[j].score);
+					printf("%s %s %s %d %s\n", enroll_array[j].c_id, course_name, enroll_array[j].semester, (int)enroll_array[j].score, letter);
+				}
+			}
+
+			printf("------------------\n");
+		}
+	}
+
+	// Checks to see if the last name was found
+	if (found == F)
+	{
+		printf("Not found\n");
+		printf("------------------\n");
+	}
 }
 
 // ------------------- Search_Courses Functions --------------------
