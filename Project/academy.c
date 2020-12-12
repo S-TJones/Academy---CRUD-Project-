@@ -9,10 +9,16 @@ int loadEnrollment();
 int loadCourses();
 void menu();
 
-void search_student();
-void search_course();
+void search_student_lname();
+void search_student_fname();
+void search_student_id();
+void search_student_byear();
+void search_course_cid();
+void search_course_semester();
 void add_course();
-void count();
+void count_students();
+void count_course();
+void count_semester();
 void sort();
 
 // Structures
@@ -177,26 +183,35 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 			if (strcmp(options[0], input_o) == 0) // lname
 			{
 				printf("Searching for student with last name: %s\n", input_d);
+
+				// Call the search_student function
+				search_student_lname(ArrayOfStudents);
 			}
 			else if (strcmp(options[1], input_o) == 0) // fname
 			{
 				printf("Searching for student with first name: %s\n", input_d);
+
+				// Call the search_student function
+				search_student_fname(ArrayOfStudents);
 			}
 			else if (strcmp(options[2], input_o) == 0) // id
 			{
 				printf("Searching for student with the id: %s\n", input_d);
+
+				// Call the search_student function
+				search_student_id(ArrayOfStudents);
 			}
 			else if (strcmp(options[3], input_o) == 0) // byear
 			{
 				printf("Searching for student with the birth year: %s\n", input_d);
+
+				// Call the search_student function
+				search_student_byear(ArrayOfStudents);
 			}
 			else
 			{
 				printf("Wrong option for \'search_student\' command. Try again.\n");
 			}
-
-			// Call the search_student function
-			search_student(options);
 		}
 		else if (strcmp(commands[1], input_c) == 0) // search_courses
 		{
@@ -208,19 +223,22 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 			if (strcmp(options[4], input_o) == 0) // cid
 			{
 				printf("Searching for a course with the ID: %s\n", input_cid);
+
+				// Call the search_course function
+				search_course_cid(ArrayOfCourses, ArrayOfEnrollments, ArrayOfStudents);
 			}
 			else if (strcmp(options[5], input_o) == 0) // cid_semester
 			{
 				scanf("%s", input_semester);
 				printf("Searching for a course with the ID & Semester: %s & %s\n", input_cid, input_semester);
+
+				// Call the search_course function
+				search_course_semester(ArrayOfEnrollments, ArrayOfCourses, ArrayOfStudents);
 			}
 			else
 			{
 				printf("Wrong option for \'search_course\' command. Try again.\n");
 			}
-
-			// Call the search_course function
-			search_course(options);
 		}
 		else if (strcmp(commands[2], input_c) == 0) // add_course
 		{
@@ -237,22 +255,28 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 			if (strcmp(options[6], input) == 0) // students
 			{
 				printf("Counting the number of: %s\n", input);
+
+				// Call the count function
+				count_students(ArrayOfStudents);
 			}
 			else if (strcmp(options[7], input) == 0) // students_course
 			{
 				printf("Counting the number of: %s\n", input);
+
+				// Call the count function
+				count_course(ArrayOfCourses);
 			}
 			else if (strcmp(options[8], input) == 0) // students_semester
 			{
 				printf("Counting the number of: %s\n", input);
+
+				// Call the count function
+				count_semester(ArrayOfEnrollments);
 			}
 			else
 			{
 				printf("Wrong option for \'count\' command. Try again.\n");
 			}
-
-			// Call the count function
-			count(options);
 		}
 		else if (strcmp(commands[4], input_c) == 0) // sort
 		{
@@ -271,22 +295,61 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 	}
 }
 
-// ------------------- Helper Functions --------------------
+// ------------------- Search_Student Functions --------------------
 
-void search_student(char *options[])
+// This function displays all the information of the students with the given last name.
+void search_student_lname(S *student_array)
 {
-	printf("Nt here 1\n");
+	printf("Search by Last Name\n");
 
 	printf("------------------\n");
 }
 
-void search_course(char *options[])
+// This function displays all the information of the students with the given first name.
+void search_student_fname(S *student_array)
 {
-	printf("Ntn here 2\n");
+	printf("Search by First Name\n");
 
 	printf("------------------\n");
 }
 
+// This function displays all the information of the students with the given id number.
+void search_student_id(S *student_array)
+{
+	printf("Search by ID\n");
+
+	printf("------------------\n");
+}
+
+// This function displays all the information of the students with the given birth year.
+void search_student_byear(S *student_array)
+{
+	printf("Search by Birth Year\n");
+
+	printf("------------------\n");
+}
+
+// ------------------- Search_Courses Functions --------------------
+
+// This function will display the course information and all the students enrolled to that course.
+void search_course_cid(C *course_array, E *enroll_array, S *student_array)
+{
+	printf("Search Course ID\n");
+
+	printf("------------------\n");
+}
+
+// This function will display the list of students enrolled in that course on that particular semester.
+void search_course_semester(E *enroll_array, C *course_array, S *student_array)
+{
+	printf("Search Course Semester\n");
+
+	printf("------------------\n");
+}
+
+// ------------------- Add_Course Functions --------------------
+
+// This function will add new records to the end of the course.txt file.
 void add_course(C ArrayOfCourses[], int num_courses)
 {
 	int credit;
@@ -302,12 +365,33 @@ void add_course(C ArrayOfCourses[], int num_courses)
 	printf("------------------\n");
 }
 
-void count(char *options[])
+// ------------------- Count Functions --------------------
+
+// This function will display the total number of students
+void count_students(S *student_array)
 {
-	printf("Ntn here 3\n");
+	printf("Count Students\n");
 
 	printf("------------------\n");
 }
+
+// This function will display the total number of students for each cid
+void count_course(C *courses_array)
+{
+	printf("Count Courses\n");
+
+	printf("------------------\n");
+}
+
+// This function will display the total number of students for each semester
+void count_semester(E *enroll_array)
+{
+	printf("Counting Semester\n");
+
+	printf("------------------\n");
+}
+
+// ------------------- Sort Function --------------------
 
 void sort(S ArrayOfStudents[], int num_students)
 {
