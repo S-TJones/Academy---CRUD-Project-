@@ -50,11 +50,14 @@ typedef struct Students
 // Main
 int main()
 {
-	// Variable declarations
+	// Variable declarations & Allocating Memory
 	int num_courses, num_enroll, num_students;
-	S st[2000];	   // You can assume there should not be more than 2000 students.
-	C course[100]; // You can assume there should not be more than 100 courses.
-	E en[2000];	   // You can assume there should not be more than 5000 enrollments.
+	// S st[2000];	   // You can assume there should not be more than 2000 students.
+	S *st = malloc(2000 * sizeof(S));
+	// C course[100]; // You can assume there should not be more than 100 courses.
+	C *course = malloc(100 * sizeof(C));
+	// E en[2000];	   // You can assume there should not be more than 5000 enrollments.
+	E *en = malloc(2000 * sizeof(E));
 
 	// In the beginning of your code, you should load the...
 	// ...data from each of the files into appropriate structures...
