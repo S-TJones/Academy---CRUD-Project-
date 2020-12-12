@@ -67,15 +67,34 @@ int main()
 //-------------------- Load Functions ----------------------
 
 // This function will update the referenced variable according to the total number of students in the file.
-int loadStudents(S st[])
+int loadStudents(S *st[])
 {
-	return 0;
+	int count = 0;
+	S student;
+
+	FILE *s_ptr;						// Declares the file pointer
+	s_ptr = fopen("students.txt", "r"); // Opens the file for reading
+
+	printf("About to read from file\n");
+
+	// Begin reading each line from the 'students.txt' file
+	while (!feof(s_ptr))
+	{
+		fscanf(s_ptr, "%d %s %s %d %d %d ", &student.e_id, student.f_name, student.l_name, &student.b_day, &student.b_month, &student.b_year);
+		printf("%d %s %s %d %d %d: line %d\n", student.e_id, student.f_name, student.l_name, student.b_day, student.b_month, student.b_year, count);
+		count = (count + 1);
+	}
+
+	printf("Just done the file.\n");
+	fclose(s_ptr); // Closes the file
+
+	return count;
 }
 
 // This function loads the en[] array with the data from the
 // ..enrollment file and returns the total number of enrollment entries.
 // int loadEnrollment(Enrollments en[])
-int loadEnrollment(E en[])
+int loadEnrollment(E *en[])
 {
 	return 0;
 }
@@ -84,7 +103,7 @@ int loadEnrollment(E en[])
 // ...data from the course file and returns the total...
 // ... number of courses in the file.
 // int loadCourses(Courses course[])
-int loadCourses(C course[])
+int loadCourses(C *course[])
 {
 	return 0;
 }
