@@ -254,7 +254,7 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 		else if (strcmp(commands[2], input_c) == 0) // add_course
 		{
 			// Call the add_course function
-			add_course(ArrayOfCourses, amountCourses);
+			add_course(ArrayOfCourses, &amountCourses, amountCourses);
 		}
 		else if (strcmp(commands[3], input_c) == 0) // count
 		{
@@ -350,7 +350,7 @@ void search_student_lname(S *student_array, int total_s, char *lname_given, C *c
 	// Checks to see if the last name was found
 	if (found == F)
 	{
-		printf("Not found\n");
+		printf("not found\n");
 		printf("------------------\n");
 	}
 }
@@ -430,7 +430,7 @@ void search_student_fname(S *student_array, int total_s, char *fname_given, C *c
 	// Checks to see if the last name was found
 	if (found == F)
 	{
-		printf("Not found\n");
+		printf("not found\n");
 		printf("------------------\n");
 	}
 }
@@ -483,7 +483,7 @@ void search_student_id(S *student_array, int total_s, int id_given, C *course_ar
 	// Checks to see if the last name was found
 	if (found == F)
 	{
-		printf("Not found\n");
+		printf("not found\n");
 		printf("------------------\n");
 	}
 }
@@ -536,7 +536,7 @@ void search_student_byear(S *student_array, int total_s, int year_given, C *cour
 	// Checks to see if the last name was found
 	if (found == F)
 	{
-		printf("Not found\n");
+		printf("not found\n");
 		printf("------------------\n");
 	}
 }
@@ -562,17 +562,45 @@ void search_course_semester(E *enroll_array, C *course_array, S *student_array)
 // ------------------- Add_Course Functions --------------------
 
 // This function will add new records to the end of the course.txt file.
-void add_course(C ArrayOfCourses[], int num_courses)
+void add_course(C *ArrayOfCourses, int *num_courses, int limit)
 {
-	int credit;
+	float credit;
 	char cid[20], c_name[20];
+	boolean match = F;
 
-	scanf("%s %s %d", cid, c_name, &credit);
+	// Allocate more memory
+	ArrayOfCourses = realloc(ArrayOfCourses, sizeof(C) * (*num_courses + 1));
 
-	// Make Course struct
-	printf("Making a Course structure\n");
+	scanf("%s %s %f", cid, c_name, &credit);
+
+	// Check to see if ID entered is unique
+	for (int i = 0; i < limit; i++)
+	{
+		if (strcmp(cid, ArrayOfCourses[i].c_id) == 0)
+		{
+			match = T;
+			break;
+		}
+	}
 
 	// Add new Corse struct to array
+	if (match == T)
+	{
+		printf("\"violation of course id uniqueness. Cannot add the record.\"\n");
+	}
+	else
+	{
+		// Add new course to file
+		FILE *c_ptr;					   // Declares the file pointer
+		c_ptr = fopen("courses.txt", "a"); // Opens the file for appending
+
+		fprintf(c_ptr, "\n%s %s %f", cid, c_name, credit); // Appends to file
+
+		fclose(c_ptr); // Closes the file
+		printf("record added\n");
+
+		*num_courses = loadCourses(ArrayOfCourses);
+	}
 
 	printf("------------------\n");
 }
@@ -659,7 +687,7 @@ void count_semester(E *enroll_array, int total_e)
 		// Loop through the Enrolls to count matching semesters
 		for (int l = 0; l < total_e; l++)
 		{
-			
+
 			if (strcmp(unique[k], enroll_array[l].semester) == 0)
 			{
 				count++;
