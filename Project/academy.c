@@ -265,24 +265,18 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 			// Check to see if the input is a valid option
 			if (strcmp(options[6], input) == 0) // students
 			{
-				printf("Counting the number of: %s\n", input);
-
 				// Call the count function
-				count_students(ArrayOfStudents);
+				count_students(amountStudents);
 			}
 			else if (strcmp(options[7], input) == 0) // students_course
 			{
-				printf("Counting the number of: %s\n", input);
-
 				// Call the count function
-				count_course(ArrayOfCourses);
+				count_course(ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls);
 			}
 			else if (strcmp(options[8], input) == 0) // students_semester
 			{
-				printf("Counting the number of: %s\n", input);
-
 				// Call the count function
-				count_semester(ArrayOfEnrollments);
+				count_semester(ArrayOfEnrollments, amountEnrolls);
 			}
 			else
 			{
@@ -586,25 +580,41 @@ void add_course(C ArrayOfCourses[], int num_courses)
 // ------------------- Count Functions --------------------
 
 // This function will display the total number of students
-void count_students(S *student_array)
+void count_students(int total)
 {
-	printf("Count Students\n");
+	printf("total students %d\n", total);
 
 	printf("------------------\n");
 }
 
 // This function will display the total number of students for each cid
-void count_course(C *courses_array)
+void count_course(C *courses_array, int total_c, E *enroll_array, int total_e)
 {
-	printf("Count Courses\n");
+	char *course_id;
+	int course_count;
+
+	for (int i = 0; i < total_c; i++)
+	{
+		course_id = courses_array[i].c_id;
+		course_count = 0;
+
+		for (int j = 0; j < total_e; j++)
+		{
+			if (strcmp(course_id, enroll_array[j].c_id) == 0)
+			{
+				course_count++;
+			}
+		}
+
+		printf("%s %d\n", course_id, course_count);
+	}
 
 	printf("------------------\n");
 }
 
 // This function will display the total number of students for each semester
-void count_semester(E *enroll_array)
+void count_semester(E *enroll_array, int total_e)
 {
-	printf("Counting Semester\n");
 
 	printf("------------------\n");
 }
