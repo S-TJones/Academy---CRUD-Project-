@@ -615,6 +615,59 @@ void count_course(C *courses_array, int total_c, E *enroll_array, int total_e)
 // This function will display the total number of students for each semester
 void count_semester(E *enroll_array, int total_e)
 {
+	int total_u = 0, count = 0;
+	char unique[100][20];
+	boolean match;
+
+	// This should add all unique semesters to the unique-array
+	for (int i = 0; i < total_e; i++)
+	{
+		match = F;
+
+		// Add the first semester to the list (first unique value)
+		if (i == 0)
+		{
+			// Copy string into array
+			strcpy(unique[total_u], enroll_array[i].semester);
+			total_u++;
+		}
+
+		// printf("Size of Unique: %ld", sizeof(unique));
+		for (int j = 0; j < total_u; j++)
+		{
+
+			if (strcmp(unique[j], enroll_array[i].semester) == 0)
+			{
+				match = T;
+				break;
+			}
+		}
+
+		// If there are no matches, add it to the array
+		if (match == F)
+		{
+			strcpy(unique[total_u], enroll_array[i].semester);
+			total_u++;
+		}
+	}
+
+	// Loop and count all the unique semesters
+	for (int k = 0; k < total_u; k++)
+	{
+		count = 0;
+
+		// Loop through the Enrolls to count matching semesters
+		for (int l = 0; l < total_e; l++)
+		{
+			
+			if (strcmp(unique[k], enroll_array[l].semester) == 0)
+			{
+				count++;
+			}
+		}
+
+		printf("%s %d\n", unique[k], count);
+	}
 
 	printf("------------------\n");
 }
