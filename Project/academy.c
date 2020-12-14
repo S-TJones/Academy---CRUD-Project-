@@ -795,9 +795,34 @@ void count_semester(E *enroll_array, int total_e)
 
 // ------------------- Sort Function --------------------
 
-void sort(S ArrayOfStudents[], int num_students)
+void sort(S student_array[], int num_students)
 {
-	printf("Sorting the students by ID\n");
+	int largest = 0;
+
+	// Loops through the list and finds the largest id-number
+	for (int i = 0; i < num_students; i++)
+	{
+		if (largest < student_array[i].u_id)
+		{
+			largest = student_array[i].u_id;
+		}
+	}
+
+	largest++;
+
+	// Loops through the array and prints all the students
+	for (int count = 0; count < largest; count++)
+	{
+		for (int k = 0; k < num_students; k++)
+		{
+			if (student_array[k].u_id == count)
+			{
+				printf("%d %s %s %d%c%d%c%d\n", student_array[k].u_id, student_array[k].f_name, student_array[k].l_name, student_array[k].b_month, '/', student_array[k].b_day, '/', student_array[k].b_year);
+				break;
+			}
+		}
+		
+	}
 
 	printf("------------------\n");
 }
