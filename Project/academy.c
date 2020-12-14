@@ -556,7 +556,7 @@ void search_course_cid(C *course_array, int c_num, E *enroll_array, int e_num, S
 		if (strcmp(course_array[i].c_id, id) == 0)
 		{
 			found = T;
-			printf("%s %f\n", course_array[i].c_name, course_array[i].total_credit);
+			printf("%s %d\n", course_array[i].c_name, (int)course_array[i].total_credit);
 
 			// Loops through enrolls-array to find matches
 			for (int j = 0; j < e_num; j++)
@@ -600,7 +600,54 @@ void search_course_cid(C *course_array, int c_num, E *enroll_array, int e_num, S
 // This function will display the list of students enrolled in that course on that particular semester.
 void search_course_semester(C *course_array, int c_num, E *enroll_array, int e_num, S *student_array, int s_num, char *id, char *semester)
 {
-	printf("Search Course Semester\n");
+	int student_id;
+	float student_grade;
+	char *student_fname = "Not Found", *student_lname = "Not Found";
+	char *letter;
+	boolean found = F;
+
+	// Loops through Course-array
+	for (int i = 0; i < c_num; i++)
+	{
+		if (strcmp(course_array[i].c_id, id) == 0)
+		{
+			found = T;
+			printf("%s %d\n", course_array[i].c_name, (int)course_array[i].total_credit);
+
+			// Loops through enrolls-array to find matches
+			for (int j = 0; j < e_num; j++)
+			{
+				if (strcmp(enroll_array[j].semester, semester) == 0 && strcmp(enroll_array[j].c_id, id) == 0)
+				{
+					student_id = enroll_array[j].s_id;
+					student_grade = enroll_array[j].score;
+					letter = letter_grade(student_grade);
+
+					// Loops through students-array to find matches
+					for (int k = 0; k < s_num; k++)
+					{
+						if (student_array[k].u_id == student_id)
+						{
+							student_lname = student_array[k].l_name;
+							student_fname = student_array[k].f_name;
+							break;
+						}
+					}
+
+					printf("%s %s %s %d %s\n", student_fname, student_lname, semester, (int)student_grade, letter);
+				}
+			}
+		}
+
+		break;
+	}
+
+	// Checks to see if the course-id was found
+	if (found == F)
+	{
+		printf("not found\n");
+		printf("------------------\n");
+	}
 
 	printf("------------------\n");
 }
@@ -640,7 +687,7 @@ void add_course(C *ArrayOfCourses, int *num_courses, int limit)
 		FILE *c_ptr;					   // Declares the file pointer
 		c_ptr = fopen("courses.txt", "a"); // Opens the file for appending
 
-		fprintf(c_ptr, "\n%s %s %f", cid, c_name, credit); // Appends to file
+		fprintf(c_ptr, "\n%s %s %d", cid, c_name, (int)credit); // Appends to file
 
 		fclose(c_ptr); // Closes the file
 		printf("record added\n");
