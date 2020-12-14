@@ -233,18 +233,15 @@ void menu(S ArrayOfStudents[], int amountStudents, C ArrayOfCourses[], int amoun
 			// Check to see if the input is a valid option
 			if (strcmp(options[4], input_o) == 0) // cid
 			{
-				printf("Searching for a course with the ID: %s\n", input_cid);
-
 				// Call the search_course function
-				search_course_cid(ArrayOfCourses, ArrayOfEnrollments, ArrayOfStudents);
+				search_course_cid(ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls, ArrayOfStudents, amountStudents, input_cid);
 			}
 			else if (strcmp(options[5], input_o) == 0) // cid_semester
 			{
 				scanf("%s", input_semester);
-				printf("Searching for a course with the ID & Semester: %s & %s\n", input_cid, input_semester);
 
 				// Call the search_course function
-				search_course_semester(ArrayOfEnrollments, ArrayOfCourses, ArrayOfStudents);
+				search_course_semester(ArrayOfCourses, amountCourses, ArrayOfEnrollments, amountEnrolls, ArrayOfStudents, amountStudents, input_cid, input_semester);
 			}
 			else
 			{
@@ -544,15 +541,64 @@ void search_student_byear(S *student_array, int total_s, int year_given, C *cour
 // ------------------- Search_Courses Functions --------------------
 
 // This function will display the course information and all the students enrolled to that course.
-void search_course_cid(C *course_array, E *enroll_array, S *student_array)
+void search_course_cid(C *course_array, int c_num, E *enroll_array, int e_num, S *student_array, int s_num, char *id)
 {
-	printf("Search Course ID\n");
+	int student_id;
+	float student_grade;
+	char *student_fname = "Not Found", *student_lname = "Not Found";
+	char *semester = "Not Found";
+	char *letter;
+	boolean found = F;
+
+	// Loops through Course-array
+	for (int i = 0; i < c_num; i++)
+	{
+		if (strcmp(course_array[i].c_id, id) == 0)
+		{
+			found = T;
+			printf("%s %f\n", course_array[i].c_name, course_array[i].total_credit);
+
+			// Loops through enrolls-array to find matches
+			for (int j = 0; j < e_num; j++)
+			{
+				if (strcmp(enroll_array[j].c_id, id) == 0)
+				{
+					student_id = enroll_array[j].s_id;
+					semester = enroll_array[j].semester;
+					student_grade = enroll_array[j].score;
+					letter = letter_grade(student_grade);
+
+					// Loops through students-array to find matches
+					for (int k = 0; k < s_num; k++)
+					{
+						if (student_array[k].u_id == student_id)
+						{
+							student_lname = student_array[k].l_name;
+							student_fname = student_array[k].f_name;
+							break;
+						}
+					}
+
+					printf("%s %s %s %d %s\n", student_fname, student_lname, semester, (int)student_grade, letter);
+				}
+			}
+		}
+
+		break;
+	}
+
+	// Checks to see if the course-id was found
+	if (found == F)
+	{
+		printf("not found\n");
+		printf("------------------\n");
+	}
 
 	printf("------------------\n");
 }
 
 // This function will display the list of students enrolled in that course on that particular semester.
-void search_course_semester(E *enroll_array, C *course_array, S *student_array)
+void search_course_semester(C *course_array, int c_num, E *enroll_array, int e_num, S *student_array, int s_num, char *id, char *semester)
 {
 	printf("Search Course Semester\n");
 
