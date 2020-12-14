@@ -583,8 +583,6 @@ void search_course_cid(C *course_array, int c_num, E *enroll_array, int e_num, S
 				}
 			}
 		}
-
-		break;
 	}
 
 	// Checks to see if the course-id was found
@@ -593,8 +591,10 @@ void search_course_cid(C *course_array, int c_num, E *enroll_array, int e_num, S
 		printf("not found\n");
 		printf("------------------\n");
 	}
-
-	printf("------------------\n");
+	else
+	{
+		printf("------------------\n");
+	}
 }
 
 // This function will display the list of students enrolled in that course on that particular semester.
@@ -638,8 +638,6 @@ void search_course_semester(C *course_array, int c_num, E *enroll_array, int e_n
 				}
 			}
 		}
-
-		break;
 	}
 
 	// Checks to see if the course-id was found
@@ -648,8 +646,10 @@ void search_course_semester(C *course_array, int c_num, E *enroll_array, int e_n
 		printf("not found\n");
 		printf("------------------\n");
 	}
-
-	printf("------------------\n");
+	else
+	{
+		printf("------------------\n");
+	}
 }
 
 // ------------------- Add_Course Functions --------------------
@@ -795,6 +795,7 @@ void count_semester(E *enroll_array, int total_e)
 
 // ------------------- Sort Function --------------------
 
+// This function will sort the students by ID number
 void sort(S student_array[], int num_students)
 {
 	int largest = 0;
@@ -817,11 +818,10 @@ void sort(S student_array[], int num_students)
 		{
 			if (student_array[k].u_id == count)
 			{
-				printf("%d %s %s %d%c%d%c%d\n", student_array[k].u_id, student_array[k].f_name, student_array[k].l_name, student_array[k].b_month, '/', student_array[k].b_day, '/', student_array[k].b_year);
+				printf("%d %s %s %d%c%d%c%d\n", student_array[k].u_id, student_array[k].f_name, student_array[k].l_name, student_array[k].b_day, '/', student_array[k].b_month, '/', student_array[k].b_year);
 				break;
 			}
 		}
-		
 	}
 
 	printf("------------------\n");
