@@ -97,8 +97,8 @@ int loadStudents(S *st)
 	int count = 0;
 	S student;
 
-	FILE *s_ptr;						// Declares the file pointer
-	s_ptr = fopen("students.txt", "r"); // Opens the file for reading
+	FILE *s_ptr;								 // Declares the file pointer
+	s_ptr = fopen("Database/students.txt", "r"); // Opens the file for reading
 
 	// Begin reading each line from the 'students.txt' file...
 	while (!feof(s_ptr)) // ... until EOF-End of File
@@ -124,8 +124,8 @@ int loadEnrollment(E *en)
 	int count = 0;
 	E enrollment;
 
-	FILE *e_ptr;						  // Declares the file pointer
-	e_ptr = fopen("enrollment.txt", "r"); // Opens the file for reading
+	FILE *e_ptr;								   // Declares the file pointer
+	e_ptr = fopen("Database/enrollment.txt", "r"); // Opens the file for reading
 
 	// Begin reading each line from the 'enrollment.txt' file...
 	while (!feof(e_ptr)) // ... until EOF-End of File
@@ -152,8 +152,8 @@ int loadCourses(C *course)
 	int count = 0;
 	C a_course;
 
-	FILE *c_ptr;					   // Declares the file pointer
-	c_ptr = fopen("courses.txt", "r"); // Opens the file for reading
+	FILE *c_ptr;								// Declares the file pointer
+	c_ptr = fopen("Database/courses.txt", "r"); // Opens the file for reading
 
 	// Begin reading each line from the 'courses.txt' file...
 	while (!feof(c_ptr)) // ... until EOF-End of File
@@ -684,8 +684,8 @@ void add_course(C *ArrayOfCourses, int *num_courses, int limit)
 	else
 	{
 		// Add new course to file
-		FILE *c_ptr;					   // Declares the file pointer
-		c_ptr = fopen("courses.txt", "a"); // Opens the file for appending
+		FILE *c_ptr;								// Declares the file pointer
+		c_ptr = fopen("Database/courses.txt", "a"); // Opens the file for appending
 
 		fprintf(c_ptr, "\n%s %s %d", cid, c_name, (int)credit); // Appends to file
 
